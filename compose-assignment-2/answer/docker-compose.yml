@@ -16,12 +16,24 @@ services:
       - drupal-sites:/var/www/html/sites      
       - drupal-themes:/var/www/html/themes
  
-  postgres:
-    image: postgres:14
+ 
+  db:
+    image: mariadb
+    restart: always
     environment:
-      - POSTGRES_PASSWORD=mypasswd
+      MARIADB_ROOT_PASSWORD: example
+      MARIADB_DATABASE: example-database
+      MARIADB_USER: example-user
+      MARIADB_PASSWORD: my_password
     volumes:
-      - drupal-data:/var/lib/postgresql/data
+      - ./datadir:/var/lib/mysql:Z
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8085:8080
+
 
 volumes:
   drupal-data:
